@@ -1,0 +1,122 @@
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+    }
+}
+
+ext {
+    buildConfig = [
+            'compileSdk': 27,
+            'minSdk'    : 19,
+            'targetSdk' : 27,
+
+            'version'   : [
+                    'major': 1,
+                    'minor': 0,
+                    'patch': 0,
+                    'build': 1,
+            ],
+    ]
+
+    buildConfig.version['name'] = "${buildConfig.version.major}.${buildConfig.version.minor}.${buildConfig.version.patch}"
+    buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
+
+    versions = [
+            'supportLibrary'     : '27.1.1',
+            'lifecycleExtensions': '1.1.0',
+            'constraintLayout'   : '1.1.2',
+            'okhttp'             : '3.10.0',
+            'retrofit'           : '2.4.0',
+            'dagger'             : '2.15',
+            'picasso'            : '2.71828',
+            'rxjava'             : '2.1.16',
+            'rxandroid'          : '2.0.2',
+            'rxbindings'         : '2.1.1',
+            'timber'             : '4.7.1',
+            'chuck'              : '1.1.0',
+            'junit'              : '4.12',
+            'mockito'            : '2.15.0',
+            'truth'              : '0.41',
+            'kfluent'            : '1.38',
+            'runner'             : '1.0.2',
+            'espresso'           : '3.0.2',
+            'leakCanary'         : '1.5.4',
+            'drive'              : '15.0.1',
+            'auth'               : '16.0.0',
+            'apigoogle'          : '1.23.0'
+    ]
+    deps = [
+            'kotlin'    : [
+                    'stdlib': "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}",
+                    'test'  : "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            ],
+            'android'   : [
+                    'arch'   : [
+                            'lifecycleExtensions': "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+                    ],
+                    'support': [
+                            'appCompat'       : "com.android.support:appcompat-v7:${versions.supportLibrary}",
+                            'recyclerView'    : "com.android.support:recyclerview-v7:${versions.supportLibrary}",
+                            'design'          : "com.android.support:design:${versions.supportLibrary}",
+                            'cardView'        : "com.android.support:cardview-v7:${versions.supportLibrary}",
+                            'constraintLayout': "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
+                    ],
+                    'test'   : [
+                            'testRunner'  : "com.android.support.test:runner:${versions.runner}",
+                            'testRules'   : "com.android.support.test:rules:${versions.runner}",
+                            'espressoCore': "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+                    ],
+            ],
+            'okhttp'    : [
+                    'client'       : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+                    'logging'      : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+                    'mockWebServer': "com.squareup.okhttp3:mockwebserver:${versions.okhttp}",
+            ],
+            'retrofit'  : [
+                    'client'       : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+                    'moshi'        : "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
+                    'gson'         : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+                    'rxjava2'      : "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
+                    'mockWebServer': "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
+            ],
+            'dagger'    : [
+                    'runtime'        : "com.google.dagger:dagger:${versions.dagger}",
+                    'compiler'       : "com.google.dagger:dagger-compiler:${versions.dagger}",
+                    'compilerAndroid': "com.google.dagger:dagger-android-processor:${versions.dagger}",
+                    'runtimeAndroid' : "com.google.dagger:dagger-android-support:${versions.dagger}"
+            ],
+            'rx2'       : [
+                    'java'    : "io.reactivex.rxjava2:rxjava:${versions.rxjava}",
+                    'android' : "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}",
+                    'bindings': "com.jakewharton.rxbinding2:rxbinding-kotlin:${versions.rxbindings}"
+            ],
+            'leakcanary': [
+                    'op'  : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+                    'noop': "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakCanary}",
+            ],
+            'chuck'     : [
+                    'op'  : "com.readystatesoftware.chuck:library:${versions.chuck}",
+                    'noop': "com.readystatesoftware.chuck:library-no-op:${versions.chuck}"
+            ],
+            'timber'    : "com.jakewharton.timber:timber:${versions.timber}",
+            'picasso'   : "com.squareup.picasso:picasso:${versions.picasso}",
+            'test'      : [
+                    'junit'  : "junit:junit:${versions.junit}",
+                    'mockito': "org.mockito:mockito-core:${versions.mockito}",
+                    'truth'  : "com.google.truth:truth:${versions.truth}",
+                    'kfluent': "org.amshove.kluent:kluent-android:${versions.kfluent}"
+            ],
+            'drive'     :[
+                'googledrive'   : "com.google.android.gms:play-services-drive:${versions.drive}"
+            ],
+            'auth'  :[
+                'authgoogle'    : "com.google.android.gms:play-services-auth:${versions.auth}"
+            ],
+            'apigoogle' :[
+                    'apigoogle' : "com.google.api-client:google-api-client-android:${versions.apigoogle}"
+            ]
+    ]
+
+}

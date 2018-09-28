@@ -1,0 +1,98 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    def buildConfig = rootProject.ext.buildConfig
+
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        applicationId 'com.example.diegojosuepachecorosas.gdwnewarchitecture'
+
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        multiDexEnabled true
+        versionCode buildConfig.version.code
+        versionName buildConfig.version.name
+
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += [file("$buildDir/generated/source/kapt/main")]
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+}
+
+dependencies {
+    def deps = rootProject.ext.deps
+
+    // Compile time dependencies
+    kapt deps.dagger.compiler
+    kapt deps.dagger.compilerAndroid
+
+    // Application dependencies
+    implementation deps.kotlin.stdlib
+    implementation deps.android.arch.lifecycleExtensions
+    implementation deps.android.support.appCompat
+    implementation deps.android.support.recyclerView
+    implementation deps.android.support.design
+    implementation deps.android.support.cardView
+    implementation deps.android.support.constraintLayout
+    implementation deps.okhttp.client
+    implementation deps.okhttp.logging
+    implementation deps.retrofit.client
+    implementation deps.retrofit.gson
+    implementation deps.dagger.runtime
+    implementation deps.dagger.runtimeAndroid
+    implementation deps.retrofit.rxjava2
+    implementation deps.rx2.java
+    implementation deps.rx2.android
+    implementation deps.rx2.bindings
+    implementation deps.timber
+    implementation deps.picasso
+    implementation deps.drive.googledrive
+    implementation deps.auth.authgoogle
+    implementation deps.apigoogle.apigoogle
+
+    // Unit/Integration tests dependencies
+    kaptTest deps.dagger.compiler
+    testImplementation deps.kotlin.test
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockito
+    testImplementation deps.okhttp.mockWebServer
+    testImplementation deps.test.truth
+    testImplementation deps.test.kfluent
+
+    // Acceptance tests dependencies
+    androidTestImplementation deps.android.test.testRunner
+    androidTestImplementation deps.android.test.testRules
+    androidTestImplementation deps.android.test.espressoCore
+
+    // Development dependencies
+    debugImplementation deps.leakcanary.op
+    releaseImplementation deps.leakcanary.noop
+    testImplementation deps.leakcanary.noop
+
+    debugImplementation deps.chuck.op
+    releaseImplementation deps.chuck.noop
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}
