@@ -27,17 +27,16 @@ import java.util.*
 class FilesActivity : BaseActivity() {
 
     companion object {
-        fun newInstance(context: Context) = Intent(context,FilesActivity::class.java)
+        const val TAG: String = "google-drive"
+        const val REQUEST_CODE_SIGN_IN = 0
+        fun newInstance(context: Context) = Intent(context, FilesActivity::class.java)
     }
 
-    val TAG: String = "google-drive"
-    var mDriveClient: DriveClient? = null
-    var mDriveResourceClient: DriveResourceClient? = null
 
-    // STATIC VARIABLES
-    val REQUEST_CODE_SIGN_IN = 0
+    private var mDriveClient: DriveClient? = null
+    private var mDriveResourceClient: DriveResourceClient? = null
+    private lateinit var credential : GoogleAccountCredential
 
-    val credential = GoogleAccountCredential.usingOAuth2(this, Arrays.asList("https://www.googleapis.com/auth/drive"))
     private val viewModel by lazy {
         getViewModel() as FilesViewModel
     }
@@ -52,6 +51,8 @@ class FilesActivity : BaseActivity() {
         adapter = RVFilesAdapter()
         rvFiles.adapter = adapter
 
+        credential = GoogleAccountCredential.usingOAuth2(this, Arrays.asList("https://www.googleapis.com/auth/drive"))!!
+
         btnGoogleDrive.setOnClickListener {
             val googleSignInClient: GoogleSignInClient = buildGoogleSignInClient()
 
@@ -60,14 +61,14 @@ class FilesActivity : BaseActivity() {
 
         viewModel.state.observe(this, Observer {
             it?.run {
-                when(this){
-                    FilesViewState.Loading ->{
+                when (this) {
+                    FilesViewState.Loading -> {
                         adapter.isLoading = true
                     }
-                    is FilesViewState.Error ->{
+                    is FilesViewState.Error -> {
                         adapter.isLoading = false
                     }
-                    is FilesViewState.Success ->{
+                    is FilesViewState.Success -> {
                         adapter.addListFiles(files)
                         adapter.isLoading = false
                     }
@@ -92,7 +93,7 @@ class FilesActivity : BaseActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     Log.i(TAG, "Sign in succesfully")
                     val name = data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
-                    if(name != null){
+                    if (name != null) {
                         credential?.selectedAccountName = name
                         mDriveClient = Drive.getDriveClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                         mDriveResourceClient = Drive.getDriveResourceClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
